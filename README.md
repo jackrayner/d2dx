@@ -234,3 +234,5 @@ D2DX is free software, but if you enjoy the project and want to buy me a coffee,
   - Fix crash when running on Windows 7.
 
 A full release history can be found on the Wiki.
+
+<!-- scratch: docs-only CI skip test, do not merge -->
