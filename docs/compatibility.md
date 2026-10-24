@@ -11,7 +11,7 @@ Derived from the source: which versions get the built-in resolution mod is decid
 | 1.12 | no | units, weather | no |
 | 1.13c | yes | units, weather, text | no |
 | 1.13d | yes | units, weather, text | no |
-| 1.14d | yes | units, weather, text | yes, under Wine/Proton (0.0.1) |
+| 1.14d | yes | units, weather, text | yes, under Wine/Proton (0.0.1 to 0.0.3) |
 
 Other versions are not supported. The rest of D2DX (scaling, anti-aliasing, windowed/fullscreen handling) is not limited by version in the same way, but only 1.14d has been tried.
 
@@ -20,7 +20,7 @@ Please report results for the untested versions through the [issue tracker](http
 ## Windows and Wine
 
 - **Windows 10** is recommended. Upstream supported Windows 7 SP1 and later; this fork's DLL is built with the newer v143 toolset and has not been tried on Windows 7 or 8.1.
-- **Linux (Wine/Proton):** 0.0.1 was played on 1.14d through Lutris with Proton on Fedora and ran fine, using `nocompatmodefix=true` in `d2dx.cfg` (see [configuration](https://github.com/jackrayner/d2dx/blob/main/docs/configuration.md)). That is one report on one setup.
+- **Linux (Wine/Proton):** 0.0.1 to 0.0.3 were played on 1.14d through Lutris with Proton on Fedora and ran fine, using `nocompatmodefix=true` in `d2dx.cfg` (see [configuration](https://github.com/jackrayner/d2dx/blob/main/docs/configuration.md)). That is one report on one setup (a 2256x1504 screen at a 1128x752 game size). With 0.0.2 and earlier, black tile-shaped patches appeared at the top-right screen edge at that size; 0.0.3 fixes them by updating SGD2FreeRes. A cutscene played from the menus fills the screen width; an Act transition cutscene during a game has not been tried.
 - The DLL is statically linked and uses only Windows system DLLs, so no Visual C++ runtime install should be needed.
 
 ## Mods
