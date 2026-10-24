@@ -17,13 +17,16 @@ Research basis: a survey of upstream's forks, open PRs and issues on 2026-10-24.
 | First release `0.0.1` (`d2dx.zip`; played on 1.14d under Wine/Proton, no problems) | fork#15 | 2026-10-24 |
 | Port: FPS slowdown in long sessions (64-bit frame timing, 32-bit unit IDs) and an uninitialised frame-time fix; upstream PR 188 by Jarcho | fork#23 | 2026-10-24 |
 | Port: smaller GPU vertex buffer (64 to 16 MiB); upstream PR 187 by Jarcho | fork#24 | 2026-10-24 |
-| Release `0.0.2` with both ports (not yet played in-game); the release-PR CI skip is confirmed working | fork#25 | 2026-10-24 |
+| Release `0.0.2` with both ports (played on 1.14d under Wine/Proton; it showed the edge-tile patches fixed in `0.0.3`); the release-PR CI skip is confirmed working | fork#25 | 2026-10-24 |
 | Dependabot for GitHub Actions | fork#3 | 2026-10-24 |
 | This tracker, plus attribution guidance | fork#8 | 2026-10-24 |
 | README made the fork's own; upstream changelog moved to `docs/upstream-changelog.md`; status badges; release no longer forced to prerelease | fork#18 | 2026-10-24 |
 | Repo housekeeping: Issues enabled, merged and scratch branches deleted, dead links removed (the imgur video is gone); licence header on `version.h`; neutral copyright wording ("The D2DX contributors") recorded in `AGENTS.md` | fork#19 | 2026-10-24 |
 | `docs/configuration.md`, `docs/compatibility.md` (per-version table with what has been tested), `CONTRIBUTING.md`; README credits cut back to plain credits | fork#20 | 2026-10-24 |
 | Repo settings: fork description, topics, squash merges use PR title + body | settings | 2026-10-24 |
+| Port: full-width cutscenes and the `nokeepaspectratio` option; upstream PR 186 by Jarcho (a cutscene from the menus fills the screen width on 1.14d under Wine/Proton) | fork#28 | 2026-10-24 |
+| Embedded SGD2FreeRes updated to the official 3.0.3.1 plus a one-string patch so it reads D2DX's config (the unpatched official DLL ignored it and crashed in the menus). The black tile patches at the screen edge at 1128x752 are completely gone in play. See `thirdparty/sgd2freeres/MODIFICATIONS.md` | fork#29 | 2026-10-24 |
+| Release `0.0.3` (the two items above) | fork#30 | 2026-10-24 |
 
 ## In progress (this fork)
 Nothing.
@@ -33,14 +36,14 @@ Source is mostly Jarcho's split-out upstream PRs. Port them one at a time, each 
 
 | # | Item | Upstream | Fixes / relates to | Risk and notes |
 |---|---|---|---|---|
-| 1 | Extend support to all game versions (per-version cell/unit structs, 1.10f/1.12 resolution mod, SGD2FreeRes update) | PR #185 | #172, #167, #165, #155, #95, #38 | Large. **Do not ship a binary `SGD2FreeRes.dll` unless its source and licence are confirmed** (see Licensing in `AGENTS.md`). |
-| 2 | Full-screen-width cutscenes + `nokeepaspectratio` | PR #186 | #99; related #78, #182, #173, #212 | **Conflicts with our `GetRenderRect` fix** (signature change in `Metrics.cpp`); resolve against the fix and keep the tests passing. |
-| 3 | xxHash for texture/palette hashing | PR #190 | #140 (maybe #166, #146) | Risky: once broke Median XL (author says fixed); hardcoded hash constants must be updated consistently. Needs `thirdparty/xxhash` with its licence and a README credit. |
-| 4 | Cursor clipping / activation fixes | PR #192 | #159; related #50, #85 | Overlaps `RenderContext.cpp` with #186 and #190; rebase last. |
+| 1 | Extend support to all game versions (per-version cell/unit structs, resolution mod on 1.10f/1.12) | PR #185 | #172, #167, #165, #155, #38 | Large. The SGD2FreeRes update it contained is done (see Done). That version supports 1.10 and 1.12A, but `BuiltinResMod::IsCompatible` still only enables the resolution mod on 1.09d, 1.13c, 1.13d and 1.14d. Needs testing on each version. |
+| 2 | xxHash for texture/palette hashing | PR #190 | #140 (maybe #166, #146) | Risky: once broke Median XL (author says fixed); hardcoded hash constants must be updated consistently. Needs `thirdparty/xxhash` with its licence and a README credit. |
+| 3 | Cursor clipping / activation fixes | PR #192 | #159; related #50, #85 | Overlaps `RenderContext.cpp` with #186 and #190; rebase last. |
 
 ## Backlog (unscheduled)
 | Item | Source | Notes |
 |---|---|---|
+| Play an in-game Act transition cutscene and check the game size is restored afterwards | this fork | `0.0.3` was only tried with a cutscene from the menus. A cutscene sets a 640x292 game size and the next Glide window open should restore it; read from the code, not played. |
 | Test the released DLL on the other supported game versions (1.09d, 1.10f, 1.12, 1.13c, 1.13d) and on native Windows, and record the results | this fork | `0.0.1` was only played on 1.14d under Wine. Windows 7/8.1 are also untested with the v143 build. |
 | Nearest-neighbour / pixel-exact upscaling | Jarcho fork (not in a PR) | #181. Would be lifted from the fork. |
 | Float window scale (`scale=1.25`) | PR #133 | In our tree nothing outside `Options.cpp/.h` reads `GetWindowScale()`, so the parsed value may be unused. Find the consumer first. Unverified: whether `toml_double_in` rejects integer literals like `scale=2`. |
